@@ -1,0 +1,4 @@
+[project]
+name = "xml"
+version = "0.1.0"
+description = "Simple XML parser for Wyn"

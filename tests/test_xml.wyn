@@ -1,0 +1,29 @@
+fn xml_get_tag(xml: string, tag: string) -> string {
+    var open = "<" + tag + ">"
+    var close = "</" + tag + ">"
+    var start = -1
+    // Find open tag
+    for i in 0..xml.len() - open.len() {
+        if xml.substring(i, i + open.len()) == open {
+            start = i + open.len()
+        }
+    }
+    if start == -1 { return "" }
+    // Find close tag
+    for i in start..xml.len() - close.len() {
+        if xml.substring(i, i + close.len()) == close {
+            return xml.substring(start, i)
+        }
+    }
+    return ""
+}
+
+fn main() -> int {
+    Test.init("xml")
+    var xml = "<root><name>Alice</name><age>30</age></root>"
+    Test.assert_eq_str(xml_get_tag(xml, "name"), "Alice", "get name")
+    Test.assert_eq_str(xml_get_tag(xml, "age"), "30", "get age")
+    Test.assert_eq_str(xml_get_tag(xml, "missing"), "", "missing tag")
+    Test.summary()
+    return 0
+}
