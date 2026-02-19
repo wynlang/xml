@@ -18,12 +18,17 @@ fn xml_get_tag(xml: string, tag: string) -> string {
     return ""
 }
 
-fn main() -> int {
-    Test.init("xml")
+test "get name" {
     var xml = "<root><name>Alice</name><age>30</age></root>"
-    Test.assert_eq_str(xml_get_tag(xml, "name"), "Alice", "get name")
-    Test.assert_eq_str(xml_get_tag(xml, "age"), "30", "get age")
-    Test.assert_eq_str(xml_get_tag(xml, "missing"), "", "missing tag")
-    Test.summary()
-    return 0
+    assert_eq(xml_get_tag(xml, "name"), "Alice")
+}
+
+test "get age" {
+    var xml = "<root><name>Alice</name><age>30</age></root>"
+    assert_eq(xml_get_tag(xml, "age"), "30")
+}
+
+test "missing tag" {
+    var xml = "<root><name>Alice</name><age>30</age></root>"
+    assert_eq(xml_get_tag(xml, "missing"), "")
 }
