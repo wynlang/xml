@@ -1,4 +1,4 @@
-# xml — Official Wyn Package
+# xml - Official Wyn Package
 
 Simple XML tag extraction. Pure Wyn.
 
