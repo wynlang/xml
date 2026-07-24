@@ -1,0 +1,43 @@
+// Wyn XML Helpers Package
+//
+// NOTE: local variables must not be named `open`/`close` - the compiler
+// emits those into generated C where they collide with the libc functions
+// of the same name, silently corrupting the value. Hence `open_tag` etc.
+
+pub fn xml_get_tag(doc: string, tag: string) -> string {
+    var open_tag = "<" + tag + ">"
+    var close_tag = "</" + tag + ">"
+    var start = doc.index_of(open_tag)
+    if start < 0 {
+        return ""
+    }
+    var content_start = start + open_tag.len()
+    var end = doc.index_of(close_tag)
+    if end < 0 {
+        return ""
+    }
+    return doc.substring(content_start, end)
+}
+
+pub fn xml_get_attr(doc: string, attr: string) -> string {
+    var needle = attr + "=\""
+    var at = doc.index_of(needle)
+    if at < 0 {
+        return ""
+    }
+    var val_start = at + needle.len()
+    for j in val_start..doc.len() {
+        if doc.substring(j, j + 1) == "\"" {
+            return doc.substring(val_start, j)
+        }
+    }
+    return ""
+}
+
+pub fn xml_escape(s: string) -> string {
+    var result = s.replace("&", "&amp;")
+    result = result.replace("<", "&lt;")
+    result = result.replace(">", "&gt;")
+    result = result.replace("\"", "&quot;")
+    return result
+}

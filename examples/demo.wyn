@@ -1,0 +1,8 @@
+import xml
+
+fn main() {
+    var doc = "<root><title>Hello World</title><item id=\"42\">Test</item></root>"
+    println("title: ${xml.xml_get_tag(doc, "title")}")
+    println("id attr: ${xml.xml_get_attr(doc, "id")}")
+    println("escaped: ${xml.xml_escape("<div>&</div>")}")
+}

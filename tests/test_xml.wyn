@@ -1,34 +1,20 @@
-fn xml_get_tag(xml: string, tag: string) -> string {
-    var open = "<" + tag + ">"
-    var close = "</" + tag + ">"
-    var start = -1
-    for i in 0..xml.len() - open.len() {
-        if xml.substring(i, i + open.len()) == open {
-            start = i + open.len()
-        }
-    }
-    if start == -1 { return "" }
-    for i in start..xml.len() - close.len() + 1 {
-        if xml.substring(i, i + close.len()) == close {
-            return xml.substring(start, i)
-        }
-    }
-    return ""
-}
+// Exercises the shipped lib in src/xml.wyn via the tests/xml.wyn symlink.
+import xml
 
-fn xml_escape(s: string) -> string {
-    var out = s.replace("&", "&amp;")
-    out = out.replace("<", "&lt;")
-    out = out.replace(">", "&gt;")
-    return out
+test "get tag" {
+    var doc = "<root><title>Hello World</title></root>"
+    assert_eq(xml.xml_get_tag(doc, "title"), "Hello World")
 }
-
-fn main() -> int {
-    assert_eq(xml_get_tag("<name>Alice</name>", "name"), "Alice")
-    assert_eq(xml_get_tag("<root><x>1</x></root>", "x"), "1")
-    assert_eq(xml_get_tag("<a>missing</b>", "c"), "")
-    assert_eq(xml_escape("a < b & c > d"), "a &lt; b &amp; c &gt; d")
-    
-    println("xml: 4 tests passed")
-    return 0
+test "get missing tag" {
+    assert_eq(xml.xml_get_tag("<root></root>", "title"), "")
+}
+test "get attr" {
+    var doc = "<item id=\"42\">Test</item>"
+    assert_eq(xml.xml_get_attr(doc, "id"), "42")
+}
+test "get missing attr" {
+    assert_eq(xml.xml_get_attr("<item>x</item>", "id"), "")
+}
+test "escape" {
+    assert_eq(xml.xml_escape("<a>&\"</a>"), "&lt;a&gt;&amp;&quot;&lt;/a&gt;")
 }
